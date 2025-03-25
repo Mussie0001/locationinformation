@@ -34,6 +34,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import java.util.Locale
 import androidx.compose.runtime.rememberCoroutineScope
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.launch
 
 
@@ -89,7 +90,9 @@ fun MapScreen() {
     // gets device last known location & sets camera pos
     LaunchedEffect(hasLocationPermission) {
         if (hasLocationPermission) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                null).addOnSuccessListener { location ->
                 if (location != null) {
                     val loc = LatLng(location.latitude, location.longitude)
                     userLocation = loc
